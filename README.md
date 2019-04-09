@@ -7,6 +7,15 @@ dependencies {
     // ...
 }
 ```
+and add
+```
+allprojects {
+  repositories {
+     // ...
+	 maven { url 'https://jitpack.io' }
+  }
+}
+```
 
 In code
 ```
