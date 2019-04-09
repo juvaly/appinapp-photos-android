@@ -3,12 +3,12 @@ Add in `build.gradle`
 ```
 dependencies {
     // ...
-    implementation 'com.github.BataevDaniil:appinapp-photos-android:d0b3ae57ca'
+    implementation 'com.github.juvaly:appinapp-photos-android:-SNAPSHOT'
     // ...
 }
 ```
 and add
-```
+```gradle
 allprojects {
   repositories {
      // ...
@@ -18,7 +18,7 @@ allprojects {
 ```
 
 In code
-```
+```java
 import codemonx.com.appinappphotosandroid.AppinappPhotosAndroid;
 
 public class MainActivity extends AppCompatActivity {
