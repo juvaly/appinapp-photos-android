@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -24,6 +25,7 @@ public class AppinappPhotosAndroid extends AppCompatActivity {
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDomStorageEnabled(true);
         webView.setWebViewClient(new ViewClient());
+        webView.addJavascriptInterface(new JSInterface(), "Android");
 
         Bundle info = getIntent().getExtras();
         String url = info.getString("apiKey");
@@ -32,6 +34,16 @@ public class AppinappPhotosAndroid extends AppCompatActivity {
             Log.e("AppinappPhotosAndroid", "url unspecified in bundle");
         } else {
             webView.loadUrl(AppinappPhotosAndroid.baseUrl + url);
+        }
+    }
+
+    public class JSInterface {
+        @JavascriptInterface
+        public void close(String command) {
+            if (command.equals("close")) {
+                AppinappPhotosAndroid.this.finish();
+            }
+
         }
     }
 
