@@ -2,6 +2,7 @@ package codemonx.com.appinappphotosandroid;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,16 +12,20 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 public class AppinappPhotosAndroid extends AppCompatActivity {
     private static String baseUrl = "http://dev-appinapp-photos-app.s3-website-us-east-1.amazonaws.com/?apiKey=";
+    private static String injectJavaScriptAboutEventPressBackButton = "window.callBackAndroidBackButtonPressed && window.callBackAndroidBackButtonPressed();";
+    WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appinapp_photos_android);
 
-        WebView webView = findViewById(R.id.webview);
+        webView = findViewById(R.id.webview);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDomStorageEnabled(true);
@@ -59,6 +64,19 @@ public class AppinappPhotosAndroid extends AppCompatActivity {
                     });
             AlertDialog alert = builder.create();
             alert.show();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            webView.evaluateJavascript(AppinappPhotosAndroid.injectJavaScriptAboutEventPressBackButton, null);
+            return;
+        }
+
+        try {
+            webView.loadUrl("javascript:" + URLEncoder.encode(AppinappPhotosAndroid.injectJavaScriptAboutEventPressBackButton, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
         }
     }
 }
