@@ -25,13 +25,17 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 public class AppinappPhotosAndroid extends AppCompatActivity {
-    private static String baseUrl = "http://dev-appinapp-photos-app.s3-website-us-east-1.amazonaws.com/?apiKey=";
     private static String injectJavaScriptAboutEventPressBackButton = "window.callBackAndroidBackButtonPressed && window.callBackAndroidBackButtonPressed();";
     private static final int REQUEST_ID = 1;
     private ValueCallback<Uri[]> filePathCallback;
     private static final String nameFolderForSavePhotoFromCamera = "AppinappPhotosAndroid";
     private Uri pathImageFromCamera;
     WebView webView;
+
+    private String getUrl(String apiKey, Boolean showChat) {
+        String chat = showChat ? "/chat" : "";
+        return "http://dev-appinapp-photos-app.s3-website-us-east-1.amazonaws.com" + chat + "/?apiKey=" + apiKey;
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -65,12 +69,13 @@ public class AppinappPhotosAndroid extends AppCompatActivity {
         webView.addJavascriptInterface(new JSInterface(), "Android");
 
         Bundle info = getIntent().getExtras();
-        String url = info.getString("apiKey");
+        String apiKey= info.getString("apiKey");
+        Boolean showChat = info.getBoolean("showChat");
 
-        if (url == null) {
-            Log.e("AppinappPhotosAndroid", "url unspecified in bundle");
+        if (apiKey == null) {
+            Log.e("AppinappPhotosAndroid", "apiKey unspecified in bundle");
         } else {
-            webView.loadUrl(AppinappPhotosAndroid.baseUrl + url);
+            webView.loadUrl(AppinappPhotosAndroid.this.getUrl(apiKey, showChat) );
         }
     }
 

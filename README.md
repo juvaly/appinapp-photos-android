@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setClass(this, AppinappPhotosAndroid.class);
         intent.putExtra("apiKey", "APP-123-123-123");
+        // if need show chat
+        intent.putExtra("showChat", true);
         startActivity(intent);
     }
 }
