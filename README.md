@@ -3,7 +3,7 @@ Add in `build.gradle`
 ```
 dependencies {
     // ...
-    implementation 'com.github.juvaly:appinapp-photos-android:1.1.1'
+    implementation 'com.github.juvaly:appinapp-photos-android:1.2.1'
     // ...
 }
 ```

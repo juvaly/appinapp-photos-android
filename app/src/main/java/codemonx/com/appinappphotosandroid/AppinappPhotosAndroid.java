@@ -91,16 +91,18 @@ public class AppinappPhotosAndroid extends AppCompatActivity {
 
     public class ViewClient extends WebViewClient {
         public void onReceivedError (WebView view, WebResourceRequest request, WebResourceError error) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(AppinappPhotosAndroid.this);
-            builder.setTitle("No Internet connection. Please try again later!")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            AppinappPhotosAndroid.this.finish();
-                            dialog.cancel();
-                        }
-                    });
-            AlertDialog alert = builder.create();
-            alert.show();
+            if (WebViewClient.ERROR_CONNECT == error.getErrorCode()) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(AppinappPhotosAndroid.this);
+                builder.setTitle("No Internet connection. Please try again later!")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                AppinappPhotosAndroid.this.finish();
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
         }
     }
 
