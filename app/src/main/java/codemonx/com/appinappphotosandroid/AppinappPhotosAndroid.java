@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,7 +35,9 @@ public class AppinappPhotosAndroid extends AppCompatActivity {
 
     private String getUrl(String apiKey, Boolean showChat) {
         String chat = showChat ? "/chat" : "";
-        return "http://dev-appinapp-photos-app.s3-website-us-east-1.amazonaws.com" + chat + "/?apiKey=" + apiKey;
+        String deviceId = Settings.Secure.getString(AppinappPhotosAndroid.this.getBaseContext().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        return "http://dev-appinapp-photos-app.s3-website-us-east-1.amazonaws.com" + chat + "/?apiKey=" + apiKey + "&deviceId=" + deviceId;
     }
 
     @Override
