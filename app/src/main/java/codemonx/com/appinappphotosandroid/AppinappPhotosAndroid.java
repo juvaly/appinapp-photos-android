@@ -32,6 +32,7 @@ public class AppinappPhotosAndroid extends AppCompatActivity {
     private static final String nameFolderForSavePhotoFromCamera = "AppinappPhotosAndroid";
     private Uri pathImageFromCamera;
     WebView webView;
+    private boolean pageIsLoaded = false;
 
     private String getUrl(String apiKey, Boolean showChat) {
         String chat = showChat ? "/chat" : "";
@@ -93,8 +94,15 @@ public class AppinappPhotosAndroid extends AppCompatActivity {
     }
 
     public class ViewClient extends WebViewClient {
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            AppinappPhotosAndroid.this.pageIsLoaded = true;
+            super.onPageFinished(view, url);
+        }
+
         public void onReceivedError (WebView view, WebResourceRequest request, WebResourceError error) {
-            if (WebViewClient.ERROR_CONNECT == error.getErrorCode()) {
+            int errorCode = error.getErrorCode();
+            if (!AppinappPhotosAndroid.this.pageIsLoaded && (WebViewClient.ERROR_CONNECT == errorCode || WebViewClient.ERROR_HOST_LOOKUP == errorCode)) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(AppinappPhotosAndroid.this);
                 builder.setTitle("No Internet connection. Please try again later!")
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
