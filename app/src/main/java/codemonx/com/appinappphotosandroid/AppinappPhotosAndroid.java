@@ -38,7 +38,7 @@ public class AppinappPhotosAndroid extends AppCompatActivity {
         String chat = showChat ? "/chat" : "";
         String deviceId = Settings.Secure.getString(AppinappPhotosAndroid.this.getBaseContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-        return "http://dev-appinapp-photos-app.s3-website-us-east-1.amazonaws.com" + chat + "/?apiKey=" + apiKey + "&deviceId=" + deviceId;
+        return "https://dev.stickies.co.il" + chat + "/?apiKey=" + apiKey + "&deviceId=" + deviceId;
     }
 
     @Override
