@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
@@ -33,6 +34,7 @@ public class AppinappPhotosAndroid extends AppCompatActivity {
     private Uri pathImageFromCamera;
     WebView webView;
     private boolean pageIsLoaded = false;
+    private int nativeOrientations = getRequestedOrientation();
 
     private String getUrl(String apiKey, Boolean showChat) {
         String chat = showChat ? "/chat" : "";
@@ -64,6 +66,9 @@ public class AppinappPhotosAndroid extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appinapp_photos_android);
 
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+
         webView = findViewById(R.id.webview);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
@@ -81,6 +86,13 @@ public class AppinappPhotosAndroid extends AppCompatActivity {
         } else {
             webView.loadUrl(AppinappPhotosAndroid.this.getUrl(apiKey, showChat) );
         }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        setRequestedOrientation(nativeOrientations);
+        super.onDestroy();
     }
 
     public class JSInterface {
