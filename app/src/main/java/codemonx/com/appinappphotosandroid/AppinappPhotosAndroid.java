@@ -40,7 +40,13 @@ public class AppinappPhotosAndroid extends AppCompatActivity {
         String chat = showChat ? "/chat" : "";
         String deviceId = Settings.Secure.getString(AppinappPhotosAndroid.this.getBaseContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-        return "https://dev.stickies.co.il" + chat + "/?apiKey=" + apiKey + "&deviceId=" + deviceId;
+        String baseUrl;
+        if (BuildConfig.DEBUG) {
+            baseUrl = "https://dev.stickies.co.il";
+        } else {
+            baseUrl = "https://www.stickies.co.il";
+        }
+        return baseUrl + chat + "/?apiKey=" + apiKey + "&deviceId=" + deviceId;
     }
 
     @Override
@@ -78,13 +84,13 @@ public class AppinappPhotosAndroid extends AppCompatActivity {
         webView.addJavascriptInterface(new JSInterface(), "Android");
 
         Bundle info = getIntent().getExtras();
-        String apiKey= info.getString("apiKey");
+        String apiKey = info.getString("apiKey");
         Boolean showChat = info.getBoolean("showChat");
 
         if (apiKey == null) {
             Log.e("AppinappPhotosAndroid", "apiKey unspecified in bundle");
         } else {
-            webView.loadUrl(AppinappPhotosAndroid.this.getUrl(apiKey, showChat) );
+            webView.loadUrl(AppinappPhotosAndroid.this.getUrl(apiKey, showChat));
         }
     }
 
@@ -112,7 +118,7 @@ public class AppinappPhotosAndroid extends AppCompatActivity {
             super.onPageFinished(view, url);
         }
 
-        public void onReceivedError (WebView view, WebResourceRequest request, WebResourceError error) {
+        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             int errorCode = error.getErrorCode();
             if (!AppinappPhotosAndroid.this.pageIsLoaded && (WebViewClient.ERROR_CONNECT == errorCode || WebViewClient.ERROR_HOST_LOOKUP == errorCode)) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(AppinappPhotosAndroid.this);
