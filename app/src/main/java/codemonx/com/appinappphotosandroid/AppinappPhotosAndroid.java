@@ -40,13 +40,7 @@ public class AppinappPhotosAndroid extends AppCompatActivity {
         String chat = showChat ? "/chat" : "";
         String deviceId = Settings.Secure.getString(AppinappPhotosAndroid.this.getBaseContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-        String baseUrl;
-        if (BuildConfig.DEBUG) {
-            baseUrl = "https://dev.stickies.co.il";
-        } else {
-            baseUrl = "https://www.stickies.co.il";
-        }
-        return baseUrl + chat + "/?apiKey=" + apiKey + "&deviceId=" + deviceId;
+        return "https://www.stickies.co.il" + chat + "/?apiKey=" + apiKey + "&deviceId=" + deviceId;
     }
 
     @Override
