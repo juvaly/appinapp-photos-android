@@ -36,11 +36,12 @@ public class AppinappPhotosAndroid extends AppCompatActivity {
     private boolean pageIsLoaded = false;
     private int nativeOrientations = getRequestedOrientation();
 
-    private String getUrl(String apiKey, Boolean showChat) {
-        String chat = showChat ? "/chat" : "";
+    private String getUrl(String apiKey, Boolean showChat, String link) {
+        String chat = showChat && link == null ? "/chat" : "";
+        String linkNormalize = link == null ? "" : link ;
         String deviceId = Settings.Secure.getString(AppinappPhotosAndroid.this.getBaseContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-        return "https://www.stickies.co.il" + chat + "/?apiKey=" + apiKey + "&deviceId=" + deviceId;
+        return "https://www.stickies.co.il" + chat + linkNormalize + "/?apiKey=" + apiKey + "&deviceId=" + deviceId;
     }
 
     @Override
@@ -80,11 +81,12 @@ public class AppinappPhotosAndroid extends AppCompatActivity {
         Bundle info = getIntent().getExtras();
         String apiKey = info.getString("apiKey");
         Boolean showChat = info.getBoolean("showChat");
+        String link = info.getString("link");
 
         if (apiKey == null) {
             Log.e("AppinappPhotosAndroid", "apiKey unspecified in bundle");
         } else {
-            webView.loadUrl(AppinappPhotosAndroid.this.getUrl(apiKey, showChat));
+            webView.loadUrl(AppinappPhotosAndroid.this.getUrl(apiKey, showChat, link));
         }
     }
 
